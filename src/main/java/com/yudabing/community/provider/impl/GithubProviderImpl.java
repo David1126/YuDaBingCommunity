@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author YuBing
@@ -22,7 +23,12 @@ public class GithubProviderImpl implements GithubProvider {
         MediaType mediaType
                 = MediaType.get("application/json; charset=utf-8");
 
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(200, TimeUnit.SECONDS)
+                .readTimeout(200, TimeUnit.SECONDS)
+                .writeTimeout(200, TimeUnit.SECONDS)
+                .build();
+
 
         RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
         Request request = new Request.Builder()
@@ -41,7 +47,11 @@ public class GithubProviderImpl implements GithubProvider {
     }
 
     public GithubUser getGithubUser (String accesstoken) {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(200, TimeUnit.SECONDS)
+                .readTimeout(200, TimeUnit.SECONDS)
+                .writeTimeout(200, TimeUnit.SECONDS)
+                .build();
         Request request = new Request.Builder()
                 .url("https://api.github.com/user?access_token=" + accesstoken)
                 .build();

@@ -42,4 +42,14 @@ public class GithubUser {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
+
+    @Override
+    public String toString() {
+        return "GithubUser{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", bio='" + bio + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                '}';
+    }
 }
