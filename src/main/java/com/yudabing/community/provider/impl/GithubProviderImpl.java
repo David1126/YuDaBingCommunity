@@ -38,7 +38,7 @@ public class GithubProviderImpl implements GithubProvider {
         try (Response response = client.newCall(request).execute()) {
             String str = Objects.requireNonNull(response.body()).string();
             String accesstoken = str.split("&")[0].split("=")[1];
-            System.out.println(accesstoken);
+            //System.out.println(accesstoken);
             return accesstoken;
         } catch (Exception e) {
             e.printStackTrace();
