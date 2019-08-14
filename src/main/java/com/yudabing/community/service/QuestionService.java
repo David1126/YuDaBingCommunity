@@ -1,8 +1,11 @@
 package com.yudabing.community.service;
 
 import com.github.pagehelper.PageHelper;
+import com.yubing.community.exception.CustomizeErrorCode;
+import com.yubing.community.exception.CustomizeException;
 import com.yudabing.community.dto.PaginationDTO;
 import com.yudabing.community.dto.QuestionDTO;
+import com.yudabing.community.mapper.QuestionExtMapper;
 import com.yudabing.community.mapper.QuestionMapper;
 import com.yudabing.community.mapper.UserMapper;
 import com.yudabing.community.model.Question;
@@ -28,6 +31,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO getList(Integer page, Integer size) {
         PageHelper.startPage(page, size);
@@ -98,6 +104,9 @@ public class QuestionService {
 
     public QuestionDTO getQuestionById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -114,7 +123,18 @@ public class QuestionService {
         } else {
             // 更新
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.updateByPrimaryKey(question);
+            int updated = questionMapper.updateByPrimaryKey(question);
+            if (updated != 1) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
+
+    public void incView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
+    }
 }
+
