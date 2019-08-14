@@ -22,7 +22,7 @@
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="com.yudabing.community.mapper" targetProject="src/main/java">
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
@@ -33,5 +33,6 @@
 
         <table tableName="user" domainObjectName="User"></table>
         <table tableName="question" domainObjectName="Question"></table>
+        <table tableName="comment" domainObjectName="Comment"></table>
     </context>
 </generatorConfiguration>
