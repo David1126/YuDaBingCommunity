@@ -4,8 +4,8 @@ import com.yudabing.community.model.Question;
 import com.yudabing.community.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-
 import java.util.List;
 
 /**
@@ -30,4 +30,7 @@ public interface QuestionMapper {
 
     @Select("select count(*) from question where creator = #{id}")
     int getCountByUser(User user);
+
+    @Select("select * from question where id = #{id}")
+    Question getQuestionById(@Param("id") Integer id);
 }
