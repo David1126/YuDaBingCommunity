@@ -2,6 +2,7 @@ package com.yudabing.community.interceptor;
 
 import com.yudabing.community.mapper.UserMapper;
 import com.yudabing.community.model.User;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,7 +24,7 @@ public class MyAuthorizationInterceptor implements HandlerInterceptor {
     private UserMapper userMapper;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(@NotNull HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length != 0)
             for (Cookie cookie : cookies) {
