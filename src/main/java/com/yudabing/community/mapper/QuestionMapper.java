@@ -1,6 +1,7 @@
 package com.yudabing.community.mapper;
 
 import com.yudabing.community.model.Question;
+import com.yudabing.community.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -20,4 +21,13 @@ public interface QuestionMapper {
 
     @Select("select * from question")
     List<Question> findAll();
+
+    @Select("select count(*) from question")
+    int getCount();
+
+    @Select("select * from question where creator = #{id}")
+    List<Question> findByUser(User user);
+
+    @Select("select count(*) from question where creator = #{id}")
+    int getCountByUser(User user);
 }
