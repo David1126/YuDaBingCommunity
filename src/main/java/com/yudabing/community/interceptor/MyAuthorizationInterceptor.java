@@ -2,15 +2,17 @@ package com.yudabing.community.interceptor;
 
 import com.yudabing.community.mapper.UserMapper;
 import com.yudabing.community.model.User;
+import com.yudabing.community.model.UserExample;
+import com.yudabing.community.model.UserExample.Criteria;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author YuBing
@@ -30,9 +32,11 @@ public class MyAuthorizationInterceptor implements HandlerInterceptor {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     String token = cookie.getValue();
-                    User user = userMapper.findByToken(token);
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);
+                    UserExample example = new UserExample();
+                    example.createCriteria().andTokenEqualTo(token);
+                    List<User> user = userMapper.selectByExample(example);
+                    if (user != null && user.size() != 0) {
+                        request.getSession().setAttribute("user", user.get(0));
                     }
                     break;
                 }

@@ -2,8 +2,12 @@ package com.yudabing.community.service;
 
 import com.yudabing.community.mapper.UserMapper;
 import com.yudabing.community.model.User;
+import com.yudabing.community.model.UserExample;
+import com.yudabing.community.model.UserExample.Criteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author YuBing
@@ -17,7 +21,10 @@ public class UserService {
     private UserMapper userMapper;
 
     public void createOrUpdate(User user) {
-        User dbUser = userMapper.findByAccountId(user.getAccountId());
+        UserExample example = new UserExample();
+        Criteria criteria = example.createCriteria();
+        criteria.andAccountIdEqualTo(user.getAccountId());
+        List<User> dbUser = userMapper.selectByExample(example);
         if (dbUser == null) {
             // 插入
             user.setGmtCreate(System.currentTimeMillis());
@@ -25,11 +32,11 @@ public class UserService {
             userMapper.insert(user);
         } else {
             //更新
-            dbUser.setGmtModified(System.currentTimeMillis());
-            dbUser.setAvatarUrl(user.getAvatarUrl());
-            dbUser.setName(user.getName());
-            dbUser.setToken(user.getToken());
-            userMapper.update(dbUser);
+            dbUser.get(0).setGmtModified(System.currentTimeMillis());
+            dbUser.get(0).setAvatarUrl(user.getAvatarUrl());
+            dbUser.get(0).setName(user.getName());
+            dbUser.get(0).setToken(user.getToken());
+            userMapper.updateByPrimaryKey(dbUser.get(0));
         }
     }
 }
