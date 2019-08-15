@@ -7,4 +7,6 @@ package com.yubing.community.exception;
  **/
 public interface CustomizeErrorCodeInterface {
     String getMessage();
+
+    Integer getCode();
 }
