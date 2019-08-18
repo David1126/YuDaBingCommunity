@@ -34,3 +34,16 @@ body {
     margin: 50px;
 }
 
+.media-body {
+    padding-top: 10px;
+}
+
+.comment {
+    margin: 10px 0;
+}
+
+.btn-comment {
+    float: right;
+    margin-bottom: 10px;
+}
+

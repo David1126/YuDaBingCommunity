@@ -47,7 +47,6 @@ public class CommentController {
         comment.setLikeCount(0L);
         commentService.insert(comment);
 
-        commentService.insert(comment);
         return ResultDTO.okOf();
     }
 }
