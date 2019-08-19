@@ -2,6 +2,7 @@ package com.yudabing.community.controller;
 
 import com.yudabing.community.dto.CommentDTO;
 import com.yudabing.community.dto.QuestionDTO;
+import com.yudabing.community.enums.CommentTypeEnum;
 import com.yudabing.community.service.CommentService;
 import com.yudabing.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class QuestionController {
                             Model model) {
 
         QuestionDTO questionDTO = questionService.getQuestionById(id);
-        List<CommentDTO> comments = commentService.listByQuestionId(id);
+        List<CommentDTO> comments = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
         //累加阅读数
         questionService.incView(id);
 
