@@ -2,6 +2,8 @@ package com.yudabing.community.mapper;
 
 import com.yudabing.community.model.Question;
 
+import java.util.List;
+
 /**
  * @author YuBing
  * @package com.yudabing.community.mapper
@@ -12,4 +14,6 @@ public interface QuestionExtMapper {
     int incView(Question record);
 
     int incCommentCount(Question record);
+
+    List<Question> selectRelated(Question question);
 }
