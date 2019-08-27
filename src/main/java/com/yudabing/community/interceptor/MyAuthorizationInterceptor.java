@@ -4,6 +4,7 @@ import com.yudabing.community.mapper.UserMapper;
 import com.yudabing.community.model.User;
 import com.yudabing.community.model.UserExample;
 import com.yudabing.community.model.UserExample.Criteria;
+import com.yudabing.community.service.NotificationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,9 @@ public class MyAuthorizationInterceptor implements HandlerInterceptor {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public boolean preHandle(@NotNull HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies = request.getCookies();
@@ -34,9 +38,11 @@ public class MyAuthorizationInterceptor implements HandlerInterceptor {
                     String token = cookie.getValue();
                     UserExample example = new UserExample();
                     example.createCriteria().andTokenEqualTo(token);
-                    List<User> user = userMapper.selectByExample(example);
-                    if (user != null && user.size() != 0) {
-                        request.getSession().setAttribute("user", user.get(0));
+                    List<User> users = userMapper.selectByExample(example);
+                    if (users != null && users.size() != 0) {
+                        request.getSession().setAttribute("user", users.get(0));
+                        Long unreadCount = notificationService.unreadCount(users.get(0).getId());
+                        request.getSession().setAttribute("unreadCount", unreadCount);
                     }
                     break;
                 }

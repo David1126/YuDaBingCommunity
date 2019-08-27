@@ -30,6 +30,7 @@
                     <li th:if="${session.user == null}">
                         <a href="https://github.com/login/oauth/authorize?client_id=d27263e370d16a3188ce&redirect_uri=http://localhost:8887/callback&state=1">登录</a>
                     </li>
+                    <li><a href="/profile/replies">通知 <span class="badge" th:text="${session.unreadCount}"></span></a></li>
                     <li class="dropdown" th:if="${session.user != null}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">
