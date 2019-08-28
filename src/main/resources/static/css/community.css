@@ -130,3 +130,8 @@ body {
     margin: 5px 5px;
     display: inline-block;
 }
+
+.footer {
+    padding: 10px 32%;
+    color: #666;
+}
