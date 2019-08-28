@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.yudabing.community.dto.AccessTokenDTO;
 import com.yudabing.community.dto.GithubUser;
 import com.yudabing.community.provider.GithubProvider;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @create 2019-08-12 17:34
  **/
 @Component
+@Slf4j
 public class GithubProviderImpl implements GithubProvider {
 
     public String getAccessToken (AccessTokenDTO accessTokenDTO) {
@@ -41,26 +43,26 @@ public class GithubProviderImpl implements GithubProvider {
             //System.out.println(accesstoken);
             return accesstoken;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("getAccessToken error,{}", accessTokenDTO, e);
         }
         return null;
     }
 
-    public GithubUser getGithubUser (String accesstoken) {
+    public GithubUser getGithubUser (String accessToken) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(200, TimeUnit.SECONDS)
                 .readTimeout(200, TimeUnit.SECONDS)
                 .writeTimeout(200, TimeUnit.SECONDS)
                 .build();
         Request request = new Request.Builder()
-                .url("https://api.github.com/user?access_token=" + accesstoken)
+                .url("https://api.github.com/user?access_token=" + accessToken)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
             String str = Objects.requireNonNull(response.body()).string();
             return JSON.parseObject(str, GithubUser.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("getUser error,{}", accessToken, e);
         }
         return null;
 

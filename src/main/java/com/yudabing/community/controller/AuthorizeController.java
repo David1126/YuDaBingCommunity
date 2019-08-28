@@ -5,6 +5,7 @@ import com.yudabing.community.dto.GithubUser;
 import com.yudabing.community.model.User;
 import com.yudabing.community.provider.GithubProvider;
 import com.yudabing.community.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import java.util.UUID;
  * @create 2019-08-12 16:11
  **/
 @Controller
+@Slf4j
 public class AuthorizeController {
 
     @Autowired
@@ -66,6 +68,7 @@ public class AuthorizeController {
 
             return "redirect:/";
         } else {
+            log.error("callback get github error,{}", githubUser);
             return "redirect:/";
         }
 
