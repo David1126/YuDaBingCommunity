@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,15 +39,20 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
-    public PaginationDTO getList(Integer page, Integer size) {
-        PageHelper.startPage(page, size);
-        QuestionExample example = new QuestionExample();
-        example.setOrderByClause("gmt_create desc");
-        List<Question> questions = questionMapper.selectByExample(example);
+    public PaginationDTO getList(String search, Integer page, Integer size) {
+
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, " ");
+            search = Arrays.stream(tags).collect(Collectors.joining("|"));
+        }
+
+        PageHelper.startPage(page, size, "gmt_create desc");
+
+        List<Question> questions = questionExtMapper.selectBySearch(search);
         //System.out.println(questions);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         PaginationDTO paginationDTO = new PaginationDTO();
-        int count = (int) questionMapper.countByExample(example);
+        int count = questionExtMapper.countBySearch(search);
         Integer totalPage;
         if (count % size == 0) {
             totalPage = count / size;

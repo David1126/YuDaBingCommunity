@@ -44,6 +44,7 @@ public class AuthorizeController {
     public String callback (@RequestParam(name = "state") String state,
                             @RequestParam(name = "code") String code,
                             HttpServletResponse response) {
+
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(client_id);
         accessTokenDTO.setClient_secret(client_secret);
@@ -67,6 +68,7 @@ public class AuthorizeController {
         } else {
             return "redirect:/";
         }
+
     }
 
     @GetMapping("/logout")

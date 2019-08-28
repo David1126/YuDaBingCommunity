@@ -30,4 +30,24 @@
     <select id="selectRelated" parameterType="com.yudabing.community.model.Question" resultMap="BaseResultMap">
         select * from QUESTION where id != #{id} and tag regexp #{tag}
     </select>
+
+    <select id="countBySearch" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        select count(*) from QUESTION
+        <where>
+            <if test="search != null">
+                and title regexp #{search}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBySearch" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        select * from QUESTION
+        <where>
+            <if test="search != null">
+                and title regexp #{search}
+            </if>
+        </where>
+    </select>
 </mapper>
