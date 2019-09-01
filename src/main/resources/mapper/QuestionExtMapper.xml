@@ -37,6 +37,7 @@
         <where>
             <if test="search != null">
                 and title regexp #{search}
+                or tag regexp #{search}
             </if>
         </where>
     </select>
@@ -47,6 +48,7 @@
         <where>
             <if test="search != null">
                 and title regexp #{search}
+                or tag regexp #{search}
             </if>
         </where>
     </select>

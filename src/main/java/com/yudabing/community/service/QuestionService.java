@@ -47,7 +47,6 @@ public class QuestionService {
         }
 
         PageHelper.startPage(page, size, "gmt_create desc");
-
         List<Question> questions = questionExtMapper.selectBySearch(search);
         //System.out.println(questions);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
@@ -160,6 +159,7 @@ public class QuestionService {
         question.setId(queryDTO.getId());
         question.setTag(regexpTag);
 
+        PageHelper.startPage(1, 10);
         List<Question> questions = questionExtMapper.selectRelated(question);
         List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
             QuestionDTO questionDTO = new QuestionDTO();
